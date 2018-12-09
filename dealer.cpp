@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <fstream>
 
 using namespace std;
 
@@ -13,6 +14,10 @@ int main(int argc, char *argv[]){
   int percentage;
   bool pflag = false;
   bool verbose = false;
+  bool oflag = false;
+  ofstream outputFile;
+  
+  
   int successCount = 0;
   
   number_of_trials=atoi(argv[argc-1]);
@@ -21,7 +26,7 @@ int main(int argc, char *argv[]){
     exit(EXIT_FAILURE);
   }
 
-  opt = getopt(argc, argv, "p:v");
+  opt = getopt(argc, argv, "p:vo:");
   while (opt !=-1){
     switch (opt){
     case 'p':
@@ -35,10 +40,14 @@ int main(int argc, char *argv[]){
     case 'v':
       verbose = true;
       break;
+    case 'o':
+      oflag = true;
+      outputFile.open(optarg, ios::binary | ios::app);
+      break;
     default: /* '?' */
       exit(EXIT_FAILURE);
     }
-    opt = getopt(argc, argv, "p:v");
+    opt = getopt(argc, argv, "p:vo:");
   }
   if (pflag == false || number_of_trials<=0){
     cerr << "Must include -p option" << endl << "Must include number of trials last" << endl;
@@ -71,10 +80,12 @@ int main(int argc, char *argv[]){
       }
       if (success == 1){
 	cout << "success" << endl;
+	outputFile << '1';
 	successCount++;
       }
       else{
 	cout << "failure" << endl;
+	outputFile << '0';
       }
     }
   }
@@ -82,5 +93,6 @@ int main(int argc, char *argv[]){
   cout << "\nCreated " << number_of_trials << " processes." << endl;
   cout << "Success - " << successPercentage << "%" << endl;
   cout << "Failure - " << 100-successPercentage << "%" << endl;
+  outputFile.close();
   return 0;
 }

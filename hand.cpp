@@ -15,12 +15,12 @@ int main(int argc, char *argv[]){
   gsl_rng_free(r);
   int percentage;
 
-  int opt = getopt(argc, argv, "p:v");
+  int opt = getopt(argc, argv, "p:vo:");
   while(opt != -1){
     if (opt == 'p'){
       percentage = atoi(optarg);
     }
-    opt = getopt(argc, argv, "p:v");
+    opt = getopt(argc, argv, "p:vo:");
   }
   
   if (a < percentage){
