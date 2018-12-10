@@ -53,8 +53,8 @@ int main(int argc, char *argv[]){
     cerr << "Must include -p option" << endl << "Must include number of trials last" << endl;
     exit(EXIT_FAILURE);
   }
-
- for (int i = 0; i < number_of_trials; i++){
+  
+  for (int i = 0; i < number_of_trials; i++){
     pid_t pid = fork();
     int status;
     if (pid == -1){
